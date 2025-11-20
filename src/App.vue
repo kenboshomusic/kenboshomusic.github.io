@@ -1,31 +1,32 @@
 <template>
   <div>
-    <headerr v-if="showPlyr"></headerr>
+    <!-- Header her zaman görünsün -->
+    <Headerr />
+
+    <!-- Router içerikleri -->
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
 
-    <footerr v-if="showPlyr"></footerr>
+    <!-- Footer her zaman görünsün -->
+    <Footerr />
+
     <notifications group="foo" position="bottom left" />
   </div>
 </template>
+
 <script>
 import Headerr from "@/components/Header/Header.vue";
-import Footerr from "@/components/Footer/Footer";
+import Footerr from "@/components/Footer/Footer.vue";
+
 export default {
   components: {
     Headerr,
     Footerr
   },
-  computed: {
-    showPlyr: function() {
-      if (this.$route.path == "/login" || this.$route.path == "/loading")
-        return false;
-      return true;
-    }
-  },
 
   created() {
+    // Tema ayarı aynı kalsın
     if (localStorage.getItem("darkTheme") === "true") {
       document
         .getElementById("varSource")
@@ -35,14 +36,13 @@ export default {
       document.getElementById("varSource").setAttribute("href", "/css/var.css");
       document.getElementById("adr-color").setAttribute("content", "#2a555b");
     }
-    if (this.$route.path != "/loading")
-      this.$router.replace({
-        name: "loading",
-        query: { next: this.$route.path }
-      });
+
+    // ❗ Login ya da loading yönlendirmesi ARTIK YOK.
+    // Site direkt içerik sayfasını açacak.
   }
 };
 </script>
+
 <style>
 .vue-notification {
   border-radius: 10px !important;
@@ -50,11 +50,12 @@ export default {
   background: var(--color3) !important;
   border-left: 5px solid var(--color5) !important;
 }
+
 .vue-notification-group {
-  /* border-radius: 10px !important; */
   bottom: 80px !important;
   width: 230px !important;
 }
+
 .notification-title {
   max-width: 100% !important;
   overflow: hidden !important;
